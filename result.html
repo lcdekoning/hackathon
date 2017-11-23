@@ -17,34 +17,36 @@
 		var question = parseInt(document.getElementById("number").value);
 		var question_intern = parseInt(document.getElementById("number_2").value);
 
-		function WordCount(str) { 
-		  	return str.split(" ").length;
-		}
+		points = get_points(question, question_intern, answer_to_dissect);
+
+		// function WordCount(str) { 
+		//   	return str.split(" ").length;
+		// }
 		
 		
-		if (include([1, 2, 6], question)) {
-			for (i = 0; i < WordCount(answer_to_dissect); i++) {
-				var words_in_answer = answer_to_dissect.split(" ");
-				console.log(words_in_answer[i]);
-				var points = get_points(question, question_intern, words_in_answer[i]);
-				if (points > 0) {
-					console.log('gevonden!');
-					break;
-				}
-			}
-			if (points == 0) {
-				for (i = 0; i < WordCount(answer_to_dissect) - 1; i++) {
-					var words_in_answer = answer_to_dissect.split(" ");
-					var string_to_check = words_in_answer[i] + ' ' + words_in_answer[i+1];
-					console.log(words_in_answer[i] + ' ' + words_in_answer[i+1]);
-					var points = get_points(question, question_intern, string_to_check);
-					if (points > 0) {
-						console.log('gevonden!');
-						break;
-					}
-				}
-			}
-		}
+		// if (include([1, 2, 6], question)) {
+		// 	for (i = 0; i < WordCount(answer_to_dissect); i++) {
+		// 		var words_in_answer = answer_to_dissect.split(" ");
+		// 		console.log(words_in_answer[i]);
+		// 		var points = get_points(question, question_intern, words_in_answer[i]);
+		// 		if (points > 0) {
+		// 			console.log('gevonden!');
+		// 			break;
+		// 		}
+		// 	}
+		// 	if (points == 0) {
+		// 		for (i = 0; i < WordCount(answer_to_dissect) - 1; i++) {
+		// 			var words_in_answer = answer_to_dissect.split(" ");
+		// 			var string_to_check = words_in_answer[i] + ' ' + words_in_answer[i+1];
+		// 			console.log(words_in_answer[i] + ' ' + words_in_answer[i+1]);
+		// 			var points = get_points(question, question_intern, string_to_check);
+		// 			if (points > 0) {
+		// 				console.log('gevonden!');
+		// 				break;
+		// 			}
+		// 		}
+		// 	}
+		// }
 
 	}
 
@@ -59,16 +61,31 @@
 			case 1: 				// jaar, seizoen, maand, datum, dag  				
 				switch (question_intern) {
 					case 1: 		// jaar
-						var current_year = (new Date()).getFullYear();
+						var current_year = (new Date()).getFullYear().toString();
 						
-						if (current_year == parseInt(answer)) {
+						if (answer.includes(current_year) == true) {
 							points = 1;
 						}
 						break;
 					case 2: 		// seizoen
 						var current_season = get_season();
+						console.log(current_season);
+
+						seasons = [answer.lastIndexOf('lente'), answer.lastIndexOf('zomer'), answer.lastIndexOf('herfst'), answer.lastIndexOf('winter')];
+						var re = new RegExp('/zomer|herfst|lente|winter/g');
+
+						Array.prototype.max = function() {
+						  return Math.max.apply(null, this);
+						};
+
+						seasons_array = new Array(4);
+						seasons_array[0] = 'lente';
+						seasons_array[1] = 'zomer';
+						seasons_array[2] = 'herfst';
+						seasons_array[3] = 'winter';
+
 						
-						if (include(current_season, answer) == true) {
+						if (include(current_season, seasons_array[seasons.indexOf(seasons.max())]) == true) {
 							points = 1;
 						}
 						
@@ -215,6 +232,12 @@
 	    for(var i=0; i<arr.length; i++) {
 	        if (arr[i] == obj) return true;
 	    }
+	}
+
+	function extractSummary(answer, input_string) {
+	  var rx = /\nSUMMARY:(.*)\n/g;
+	  var arr = rx.exec(iCalContent);
+	  return arr[1]; 
 	}
 
 
