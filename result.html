@@ -18,36 +18,6 @@
 		var question_intern = parseInt(document.getElementById("number_2").value);
 
 		points = get_points(question, question_intern, answer_to_dissect);
-
-		// function WordCount(str) { 
-		//   	return str.split(" ").length;
-		// }
-		
-		
-		// if (include([1, 2, 6], question)) {
-		// 	for (i = 0; i < WordCount(answer_to_dissect); i++) {
-		// 		var words_in_answer = answer_to_dissect.split(" ");
-		// 		console.log(words_in_answer[i]);
-		// 		var points = get_points(question, question_intern, words_in_answer[i]);
-		// 		if (points > 0) {
-		// 			console.log('gevonden!');
-		// 			break;
-		// 		}
-		// 	}
-		// 	if (points == 0) {
-		// 		for (i = 0; i < WordCount(answer_to_dissect) - 1; i++) {
-		// 			var words_in_answer = answer_to_dissect.split(" ");
-		// 			var string_to_check = words_in_answer[i] + ' ' + words_in_answer[i+1];
-		// 			console.log(words_in_answer[i] + ' ' + words_in_answer[i+1]);
-		// 			var points = get_points(question, question_intern, string_to_check);
-		// 			if (points > 0) {
-		// 				console.log('gevonden!');
-		// 				break;
-		// 			}
-		// 		}
-		// 	}
-		// }
-
 	}
 
 
@@ -62,21 +32,14 @@
 				switch (question_intern) {
 					case 1: 		// jaar
 						var current_year = (new Date()).getFullYear().toString();
-						
-						if (answer.includes(current_year) == true) {
-							points = 1;
-						}
+						if (answer.includes(current_year) == true) {points = 1;}
 						break;
 					case 2: 		// seizoen
 						var current_season = get_season();
-						console.log(current_season);
-
 						seasons = [answer.lastIndexOf('lente'), answer.lastIndexOf('zomer'), answer.lastIndexOf('herfst'), answer.lastIndexOf('winter')];
-
 						Array.prototype.max = function() {
 						  return Math.max.apply(null, this);
 						};
-
 						seasons_array = new Array(4);
 						seasons_array[0] = 'lente';
 						seasons_array[1] = 'zomer';
@@ -84,26 +47,11 @@
 						seasons_array[3] = 'winter';
 
 						
-						if (include(current_season, seasons_array[seasons.indexOf(seasons.max())]) == true) {
-							points = 1;
-						}
+						if (include(current_season, seasons_array[seasons.indexOf(seasons.max())]) == true) {points = 1;}
 						
 						break;
 					case 3: 		// maand
-						var month = new Array(12);
-						month[0] = "januari";
-						month[1] = "februari";
-						month[2] = "maart";
-						month[3] = "april";
-						month[4] = "mei";
-						month[5] = "juni";
-						month[6] = "juli";
-						month[7] = "augustus";
-						month[8] = "september";
-						month[9] = "oktober";
-						month[10] = "november";
-						month[11] = "december";
-
+						month = get_month();
 						var current_month = month[(new Date()).getMonth()];
 						
 						months = [];
@@ -115,17 +63,34 @@
 						  return Math.max.apply(null, this);
 						};
 
-						if (current_month == month[months.indexOf(months.max())]) {
-							points = 1;
-						}
+						if (current_month == month[months.indexOf(months.max())]) {points = 1;}
 
 						break;
 					case 4: 		// date
 						var current_date = get_date();
+						month = get_month();
 
-						if (include(current_date, answer) == true) {
-							points = points + 1;
+						months = [];
+						for (i = 0; i < 12; i++) {
+							months.push(answer.lastIndexOf(month[i]));
 						}
+												
+						Array.prototype.max = function() {
+						  return Math.max.apply(null, this);
+						};
+
+						days = [];
+						for (i = 0; i < 32; i++) {
+							days.push(answer.lastIndexOf(' ' + i + ' '));
+						}
+												
+						Array.prototype.max = function() {
+						  return Math.max.apply(null, this);
+						};
+
+						var answer_date = [days.indexOf(days.max())] + ' '+ month[months.indexOf(months.max())]
+
+						if (include(current_date, answer_date) == true) {points = points + 1;}
 						break;
 					case 5: 		// dag
 						var current_day = new Date();
@@ -149,11 +114,7 @@
 						  return Math.max.apply(null, this);
 						};
 
-						console.log(current_day);
-						console.log(weekday[days.indexOf(days.max())])
-						if (current_day == weekday[days.indexOf(days.max())]) {
-							points = 1;
-						}
+						if (current_day == weekday[days.indexOf(days.max())]) {points = 1;}
 						break;
 				}
 			case 2: 				// provincie, plaats, ziekenhuis, afdeling, verdieping
@@ -161,9 +122,7 @@
 			case 3: 				// drie voorwerpen
 				break;	
 			case 4: 				// 100 - zeven
-				if (include([93, 86, 79, 72, 65], answer) == false) {
-					points = points - 5;
-				}
+				if (include([93, 86, 79, 72, 65], answer) == false) {points = points - 1};
 				break;
 			case 5:  				// drie voorwerpen herhalen
 				break;
@@ -218,19 +177,7 @@
 
 	function get_date() {
 		days = []
-		var month = new Array(12);
-		month[0] = "januari";
-		month[1] = "februari";
-		month[2] = "maart";
-		month[3] = "april";
-		month[4] = "mei";
-		month[5] = "juni";
-		month[6] = "juli";
-		month[7] = "augustus";
-		month[8] = "september";
-		month[9] = "oktober";
-		month[10] = "november";
-		month[11] = "december";
+		month = get_month();
 
 		Date.prototype.addDays = function(days) {
 		  var dat = new Date(this.valueOf());
@@ -251,10 +198,25 @@
 
 	function include(arr, obj) {
 	    for(var i=0; i<arr.length; i++) {
-	        console.log('arr[i]: ' + arr[i]);
-	        console.log(obj);
 	        if (arr[i] == obj) return true;
 	    }
+	}
+
+	function get_month() {
+		var month = new Array(12);
+		month[0] = "januari";
+		month[1] = "februari";
+		month[2] = "maart";
+		month[3] = "april";
+		month[4] = "mei";
+		month[5] = "juni";
+		month[6] = "juli";
+		month[7] = "augustus";
+		month[8] = "september";
+		month[9] = "oktober";
+		month[10] = "november";
+		month[11] = "december";
+		return month;
 	}
 
 </script>
