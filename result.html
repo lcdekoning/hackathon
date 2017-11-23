@@ -72,7 +72,6 @@
 						console.log(current_season);
 
 						seasons = [answer.lastIndexOf('lente'), answer.lastIndexOf('zomer'), answer.lastIndexOf('herfst'), answer.lastIndexOf('winter')];
-						var re = new RegExp('/zomer|herfst|lente|winter/g');
 
 						Array.prototype.max = function() {
 						  return Math.max.apply(null, this);
@@ -107,9 +106,19 @@
 
 						var current_month = month[(new Date()).getMonth()];
 						
-						if (current_month == answer) {
+						months = [];
+						for (i = 0; i < 12; i++) {
+							months.push(answer.lastIndexOf(month[i]));
+						}
+												
+						Array.prototype.max = function() {
+						  return Math.max.apply(null, this);
+						};
+
+						if (current_month == month[months.indexOf(months.max())]) {
 							points = 1;
 						}
+
 						break;
 					case 4: 		// date
 						var current_date = get_date();
@@ -130,8 +139,20 @@
 						weekday[6] = "zaterdag";
 
 						var current_day = weekday[(new Date()).getDay()];
-						if (current_day == answer) {
-							points = points + 1;
+
+						days = [];
+						for (i = 0; i < 12; i++) {
+							days.push(answer.lastIndexOf(weekday[i]));
+						}
+												
+						Array.prototype.max = function() {
+						  return Math.max.apply(null, this);
+						};
+
+						console.log(current_day);
+						console.log(weekday[days.indexOf(days.max())])
+						if (current_day == weekday[days.indexOf(days.max())]) {
+							points = 1;
 						}
 						break;
 				}
@@ -230,16 +251,11 @@
 
 	function include(arr, obj) {
 	    for(var i=0; i<arr.length; i++) {
+	        console.log('arr[i]: ' + arr[i]);
+	        console.log(obj);
 	        if (arr[i] == obj) return true;
 	    }
 	}
-
-	function extractSummary(answer, input_string) {
-	  var rx = /\nSUMMARY:(.*)\n/g;
-	  var arr = rx.exec(iCalContent);
-	  return arr[1]; 
-	}
-
 
 </script>
 </meta>
