@@ -10,7 +10,13 @@
 
 <button onclick="dissect_answer()" href="javascript:;">Voer in</button>
 
+
+
 <script>
+	// TODO
+ 	// handelingen
+ 	// niet meer dan 1 keer oefening kunnen doen
+ 	// points bijhouden
 
 	function dissect_answer() {
 		var answer_to_dissect = (document.getElementById("answer").value).toLowerCase();
@@ -120,15 +126,62 @@
 			case 2: 				// provincie, plaats, ziekenhuis, afdeling, verdieping
 				break;
 			case 3: 				// drie voorwerpen
+				var objects = new Array(3);
+				objects[0] = "appel";
+				objects[1] = "sleutel";
+				objects[2] = "tafel";
+				console.log(objects);
+
+				object_index = [answer.lastIndexOf(objects[0]), answer.lastIndexOf(objects[1]), answer.lastIndexOf(objects[2])];
+				console.log(object_index);
+
+				for (i = 0; i < 3; i++) {
+					if (object_index[i] != -1) {
+						points = points + 1;
+					}
+				}
 				break;	
 			case 4: 				// 100 - zeven
 				if (include([93, 86, 79, 72, 65], answer) == false) {points = points - 1};
 				break;
 			case 5:  				// drie voorwerpen herhalen
+				var objects = new Array(3);
+				objects[0] = "appel";
+				objects[1] = "sleutel";
+				objects[2] = "tafel";
+				console.log(objects);
+
+				object_index = [answer.lastIndexOf(objects[0]), answer.lastIndexOf(objects[1]), answer.lastIndexOf(objects[2])];
+				console.log(object_index);
+
+				for (i = 0; i < 3; i++) {
+					if (object_index[i] != -1) {
+						points = points + 1;
+					}
+				}	
 				break;
 			case 6: 				// horloge en pen
+				var objects = new Array(3);
+				objects[0] = "horloge";
+				objects[1] = "polshorloge";
+				objects[2] = "pen";
+				console.log(objects);
+
+				object_index = [answer.lastIndexOf(objects[0]), answer.lastIndexOf(objects[1]), answer.lastIndexOf(objects[2])];
+				console.log(object_index);
+
+				for (i = 0; i < 3; i++) {
+					if (object_index[i] != -1) {
+						points = points + 1;
+					}
+				}	
 				break;
 			case 7: 				// Nu eens dit en dan eens dat
+				var sentence = "nu eens dit en dan eens dat";
+				sentence_index = answer.lastIndexOf(sentence);
+				if (sentence_index != -1) {
+					points = 1;
+				} 
 				break;
 			case 8: 				// handeling
 				break;
